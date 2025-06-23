@@ -42,9 +42,9 @@
 - Предварительная русификация на датасете [Saiga](https://huggingface.co/datasets/IlyaGusev/saiga_scored).
 - Дообучение на переведенный датасет [WebGLM-QA](https://huggingface.co/datasets/THUDM/webglm-qa).
 - Метод [Retrieval Augmented FineTuning](https://arxiv.org/abs/2403.10131).
-- Дообучение на [синтетичских словарях](https://arxiv.org/abs/2406.19292).
+- Дообучение на [синтетических словарях](https://arxiv.org/abs/2406.19292).
 
-Все дообучение проводилось для 1.5B и 3B моделей через LoRA адаптеры. 
+Всё дообучение проводилось для 1.5B и 3B моделей через LoRA адаптеры. 
 
 Ключевые результаты: 
 
