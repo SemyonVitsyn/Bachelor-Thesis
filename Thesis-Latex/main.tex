@@ -1,0 +1,39 @@
+\documentclass[a4paper, openany, 12pt]{article}
+
+%% подключаем стандарт библиографии
+\bibliographystyle{gost71u}
+
+%% для "Abstract" в классе book
+% \newenvironment{abstract}{}{}
+% \usepackage{abstract}
+
+%% подключаем преамбулу: в ней содержится подключение всех необходимых пакетов
+\input{include/preambule.tex}
+
+\begin{document}
+    %% титульник
+    \input{include/title.tex}
+
+    %% аннотоция
+    \fontsize{14}{20}\selectfont
+    \input{parts/Annotation.tex}
+    %% содержание
+    \tableofcontents{}
+    \newpage
+
+    \input{parts/Intro.tex} %% Введение
+    \input{parts/Subject.tex} %% Предметная область
+    \input{parts/Problem.tex} %% Постановка задачи
+    \input{parts/Solution.tex} %% Обзор статей и построение решения
+    \input{parts/Practical.tex} %% Описание практической части
+    \input{parts/Results.tex} %% Результаты
+    \input{parts/Final.tex} %% Заключение
+
+    %% НЕ ТРОГАЙТЕ!!!
+    \nocite{*}
+    \bibliography{references}
+
+    %% в зависимости от надобности подключаем раздел "Приложение"
+    \newpage
+    \input{parts/Appendix.tex}
+\end{document}

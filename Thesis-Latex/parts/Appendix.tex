@@ -1,0 +1,192 @@
+\section*{Приложение}
+\addcontentsline{toc}{section}{Приложение}
+\label{sec:Apendix} \index{Apendix}
+
+
+
+\subsection*{Приложение A: Запрос для LLM-судьи} \label{app:judge_prompt}
+\begin{minted}[fontsize=\small, frame=single]{python}
+def get_judge_prompt(question, relevant_context, reference_answer, model_answer):
+    messages = []
+
+    messages.append({"role": "system", "content": ("You are a helpful assistant "
+    that scores RAG answers against the ground truth. Always respond with a JSON "
+    object containing a 'comment' (string), 'is_inappropriate_refusal' (0-1), "
+    "'score' (number 1-5), 'is_correct' (0-1) fields.")})
+
+    judge_prompt = f"""
+    **Question**: {question}
+    **Relevant context**: {relevant_context}
+    **Reference Answer**: {reference_answer}
+    **Model Answer**: {model_answer}
+
+    **Evaluation Rules**:
+    1. Scoring Scale:
+    - 5: Good answer (factually correct, complete)
+    - 4: Mostly correct with minor issues
+    - 3: Partially correct but has inaccuracies
+    - 2: Mostly incorrect but contains relevant elements
+    - 1: Completely wrong or irrelevant
+
+    2. Binary Correctness:
+    - 1 (Correct): Answer conveys the same meaning as reference 
+    (exact wording not required)
+    - 0 (Incorrect): Meaning differs from reference or contains false information
+
+    3. Binary Refuse:
+    - 1 (Inappropriate refusal): The model answer is a refusal, 
+    while the reference contains a full answer
+    - 0 (A normal answer or an appropriate refusal)
+
+    4. Key Principles:
+    - Focus on whether the model answers the question asked, 
+    not on whether it exactly matches the reference
+    - There is no need to lower the score if the model's answer 
+    omits some facts that are insignificant to the question
+    - If an answer seems redundant in relation to the reference, but the 
+    information is contained in a relevant context, then there is no need 
+    to lower the score for this
+    - Ignore stylistic differences if core meaning is preserved
+    - Inappropriate refusal should always have score 2 out of 5!
+
+    Provide analysis in JSON format: {{"comment": "...", 
+    "is_inappropriate_refusal": 0|1, score": 1-5, "is_correct": 0|1}}"""
+
+    messages.append({"role": "user", "content": judge_prompt})
+
+    return messages
+\end{minted}
+
+
+
+\subsection*{Приложение B: Запрос при генерации COT разметки} \label{app:cot_prompt}
+\begin{minted}[fontsize=\small, frame=single]{python}
+def get_cot_prompt(context_list, question, answer):
+    context = ''
+    for i, c in enumerate(context_list):
+        context += f'Источник [{i+1}]:'+"\n"+c+"\n\n"
+
+    prompt = (
+        f"# Контекстная информация:\n\n{context}\n\n"
+        f"# Вопрос:\n\n{question}\n"
+        f"# Оригинальный ответ:\n\n{answer}\n"
+        "# Задача:\n\n"
+        "Твоя задача состоит в том, чтобы дать более детальный ответ на" \
+        "вопрос, используя исключительно информацию из контекста.\n" \
+        "Для этого последовательно порассуждай про то, какую информацию" \
+        "хочет узнать пользователь и как информация из " \
+        "оригинального ответа с этим соотносится.\n" \
+        "В своем ответе не ссылайся на оригинальный ответ, но учти, что он " \
+        "абсолютно корректен и тебе нужно лишь дать расширенную его версию.\n" \
+        "Указывай номер источника, про который рассуждаешь.\n" \
+        "Последний абзац должен начинаться со слова ОТВЕТ:\\n и " \
+        "содержать полный ответ на поставленный вопрос.\n"
+        "В нем особенно важно указывать номера использованных источников." \
+        "# Твой расширенный ответ:\n\n"
+    )
+    return prompt
+\end{minted}
+
+
+
+\subsection*{Приложение C: конфигурации обучения} \label{app:learning_config}
+
+\begin{table}[ht]
+\centering
+\caption{RU конфигурация обучения}
+\fontsize{12}{14}\selectfont
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{
+  >{\centering\arraybackslash}p{5cm} 
+  >{\centering\arraybackslash}p{10cm}
+}
+\toprule
+\textbf{Параметр} & \textbf{Значение} \\
+\midrule
+Learning rate & 0.00004 \\
+\midrule
+Device batch size & 8 \\
+\midrule
+Gradient accumulation & 4 \\
+\midrule
+Global batch size & 32 \\
+\midrule
+Epoch & 1 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Default WebGLM конфигурация обучения}
+\fontsize{12}{14}\selectfont
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{
+  >{\centering\arraybackslash}p{5cm} 
+  >{\centering\arraybackslash}p{10cm}
+}
+\toprule
+\textbf{Параметр} & \textbf{Значение} \\
+\midrule
+Learning rate & 0.00002 \\
+\midrule
+Device batch size & 8 \\
+\midrule
+Gradient accumulation & 4 \\
+\midrule
+Global batch size & 32 \\
+\midrule
+Epoch & 1 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{RAFT WebGLM конфигурация обучения}
+\fontsize{12}{14}\selectfont
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{
+  >{\centering\arraybackslash}p{5cm} 
+  >{\centering\arraybackslash}p{10cm}
+}
+\toprule
+\textbf{Параметр} & \textbf{Значение} \\
+\midrule
+Learning rate & 0.00002 \\
+\midrule
+Device batch size & 4 \\
+\midrule
+Gradient accumulation & 8 \\
+\midrule
+Global batch size & 32 \\
+\midrule
+Epoch & 1 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Synth конфигурация обучения}
+\fontsize{12}{14}\selectfont
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{
+  >{\centering\arraybackslash}p{5cm} 
+  >{\centering\arraybackslash}p{10cm}
+}
+\toprule
+\textbf{Параметр} & \textbf{Значение} \\
+\midrule
+Learning rate & 0.00001 \\
+\midrule
+Device batch size & 2 \\
+\midrule
+Gradient accumulation & 12 \\
+\midrule
+Global batch size & 24 \\
+\midrule
+Epoch & 1 \\
+\bottomrule
+\end{tabularx}
+\end{table}

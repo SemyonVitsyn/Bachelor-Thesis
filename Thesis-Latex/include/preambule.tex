@@ -1,0 +1,131 @@
+%% Работа с русским языком
+\usepackage{cmap}			 % поиск в PDF
+\usepackage{mathtext} 		 % русские буквы в формулах
+\usepackage[T2A]{fontenc}	 % кодировка
+\usepackage[utf8]{inputenc}	 % кодировка исходного текста
+\usepackage[russian]{babel}	 % локализация и переносы
+
+%% Пакеты для работы с математикой
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{icomma}
+
+%% Нумерация формул (опционально)
+%\mathtoolsset{showonlyrefs=true} % показывать номера только у тех формул, на которые есть \eqref{} в тексте.
+%\usepackage{leqno}               % нумерация формул слева
+
+%% Шрифты
+\usepackage{euscript}	 % шрифт "Евклид"
+\usepackage{mathrsfs}    % красивый мат. шрифт
+
+%% Некоторые полезные макросы для дебага (в случае недоверия авторам шаблона)
+\makeatletter
+\newcommand\thefontsize{The current font size is: \f@size pt} % пример: \section{\thefontsize}
+\makeatother
+
+%% Настройка размеров шрифтов
+\makeatletter
+\setlength{\headheight}{28pt}
+%% TODO: мне не удалось разобраться, как грамотно подбирать второе число в 
+%% \@setfontsize\*, но ряд эксппериментов показывает, что "10" выравнивает текст весьма прилично :)
+\renewcommand\Huge{\@setfontsize\Huge{14pt}{10}}
+\renewcommand\huge{\@setfontsize\huge{14pt}{10}}
+\renewcommand\Large{\@setfontsize\Large{14pt}{10}}
+\renewcommand\large{\@setfontsize\large{12pt}{10}}
+\makeatother
+
+%% Поля (геометрия страницы)
+\usepackage[left=3cm,right=1.5cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+%% Русские списки
+\usepackage{enumitem}
+\makeatletter
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+\makeatother
+
+%% Работа с картинками
+\usepackage{caption}
+\captionsetup{justification=centering} % центрирование подписей к картинкам
+\usepackage{graphicx}                  % вставки рисунков
+\graphicspath{{images/}{images2/}}     % папки с картинками
+\setlength\fboxsep{3pt}                % отступ рамки \fbox{} от рисунка
+\setlength\fboxrule{1pt}               % толщина линий рамки \fbox{}
+\usepackage{wrapfig}                   % обтекание рисунков и таблиц текстом
+
+%% Работа с таблицами
+\usepackage{array,tabularx,tabulary,booktabs} % дополнительная работа с таблицами
+\usepackage{longtable}                        % длинные таблицы
+\usepackage{multirow}                         % слияние строк в таблице
+
+%% Красная строка
+\setlength{\parindent}{2em}
+
+%% Интервалы
+\linespread{1}
+\usepackage{multirow}
+
+%% TikZ
+\usepackage{tikz}
+\usetikzlibrary{graphs,graphs.standard}
+
+%% Верхний колонтитул
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+%% Перенос знаков в формулах (по Львовскому)
+\newcommand*{\hm}[1]{#1\nobreak\discretionary{}{\hbox{$\mathsurround=0pt #1$}}{}}
+
+%% Дополнительно
+\usepackage{float}   % добавляет возможность работы с командой [H] которая улучшает расположение на странице
+\usepackage{gensymb} % красивые градусы
+\usepackage{caption} % пакет для подписей к рисункам, в частности, для работы caption*
+\usepackage{listings} % пакет для листингов с кодом
+\lstset{              % настройки для лисингов с кодом
+basicstyle=\small\ttfamily,
+columns=flexible,
+breaklines=true
+}
+
+% Hyperref (для ссылок внутри  pdf)
+\usepackage[unicode, pdftex]{hyperref}
+
+% Отступ перед первым абзацем в каждом разделе
+\usepackage{indentfirst}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\usepackage{fancyvrb}
+
+\lstdefinestyle{mypython}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{orange!80!black},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=none,
+    backgroundcolor=\color{gray!5},
+    upquote=true,
+    inputencoding=utf8,
+    literate=
+    {а}{{\cyra}}1 {б}{{\cyrb}}1 {в}{{\cyrv}}1 {г}{{\cyrg}}1 {д}{{\cyrd}}1
+    {е}{{\cyre}}1 {ё}{{\cyryo}}1 {ж}{{\cyrzh}}1 {з}{{\cyrz}}1 {и}{{\cyri}}1
+    {й}{{\cyrishrt}}1 {к}{{\cyrk}}1 {л}{{\cyrl}}1 {м}{{\cyrm}}1 {н}{{\cyrn}}1
+    {о}{{\cyro}}1 {п}{{\cyrp}}1 {р}{{\cyrr}}1 {с}{{\cyrs}}1 {т}{{\cyrt}}1
+    {у}{{\cyru}}1 {ф}{{\cyrf}}1 {х}{{\cyrh}}1 {ц}{{\cyrc}}1 {ч}{{\cyrch}}1
+    {ш}{{\cyrsh}}1 {щ}{{\cyrshch}}1 {ъ}{{\cyrhrdsn}}1 {ы}{{\cyrery}}1
+    {ь}{{\cyrsftsn}}1 {э}{{\cyrerev}}1 {ю}{{\cyryu}}1 {я}{{\cyrya}}1
+    {А}{{\CYRA}}1 {Б}{{\CYRB}}1 {В}{{\CYRV}}1 {Г}{{\CYRG}}1 {Д}{{\CYRD}}1
+    {Е}{{\CYRE}}1 {Ё}{{\CYRYO}}1 {Ж}{{\CYRZH}}1 {З}{{\CYRZ}}1 {И}{{\CYRI}}1
+    {Й}{{\CYRISHRT}}1 {К}{{\CYRK}}1 {Л}{{\CYRL}}1 {М}{{\CYRM}}1 {Н}{{\CYRN}}1
+    {О}{{\CYRO}}1 {П}{{\CYRP}}1 {Р}{{\CYRR}}1 {С}{{\CYRS}}1 {Т}{{\CYRT}}1
+    {У}{{\CYRU}}1 {Ф}{{\CYRF}}1 {Х}{{\CYRH}}1 {Ц}{{\CYRC}}1 {Ч}{{\CYRCH}}1
+    {Ш}{{\CYRSH}}1 {Щ}{{\CYRSHCH}}1 {Ъ}{{\CYRHRDSN}}1 {Ы}{{\CYRERY}}1
+    {Ь}{{\CYRSFTSN}}1 {Э}{{\CYREREV}}1 {Ю}{{\CYRYU}}1 {Я}{{\CYRYA}}1
+}
+
+\lstset{style=mypython}
+
+\usepackage{minted}

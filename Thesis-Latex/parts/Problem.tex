@@ -1,0 +1,37 @@
+\section{Постановка задачи}
+\label{Problem} \index{Chapter 3}
+
+В данной работе обратим внимание на существующие проблемы современных языковых моделей, построим и опишем эффективный пайплайн дообучения LLM в задаче извлечения информации из контекста на примере русскоязычного RAG, а также представим пайплайн оценки качества. Исследование посвящено улучшению исключительно генеративной части RAG-пайплайна, считая остальные компоненты фиксированными.
+
+Формально можно поставить задачу оптимизации со следующими составляющими:
+
+\begin{itemize}
+\item\textbf{Модель генерации} $g_\theta: \mathcal{X} \rightarrow \mathcal{Y}$ с обучаемыми параметрами $\theta$.
+\item \textbf{Обучающие данные} $D_{train} = {(x_i, y_i)}_{i=1}^M$ где:
+\begin{itemize}
+\item $x_i \in \mathcal{X}$ — входные тексты, состоящие из контекста и запроса.
+\item $y_i \in \mathcal{Y}$ — эталонные ответы.
+\end{itemize}
+\item \textbf{Гиперпараметры обучения} $\eta$, включающие:
+\begin{itemize}
+\item Learning rate: $\lambda$.
+\item Коэффициент регуляризации: $\mu$.
+\item Размер батча: $bs$.
+\item Lora rank: $r$.
+\end{itemize}
+\item \textbf{Оценочный бенчмарк}: benchmark.
+\item \textbf{Метрика итогового качества}, определяемая композицией метрик ROUGE-L и оценки LLM-судьи:
+\begin{equation}
+    Quality = \{q_i(g_\theta, benchmark) \mid q_i \in \{\textit{ROUGE-L}, \textit{LLM-Score}\}\}
+\end{equation}
+\end{itemize}
+
+Требуется найти оптимальные параметры модели, гиперпараметры и обучающие данные, максимизирующие качество на бенчмарке:
+
+\begin{equation}
+    (\theta^{\star}, \eta^{\star}, D_{train}^{\star}) = \underset{\theta, \eta, D_{train}}{\arg\max}\ Quality(g_\theta, benchmark)
+\end{equation}
+
+\noindentПри ограничениях в объеме вычислительных ресурсов $\text{VRAM}\leq Capacity$.
+
+\newpage

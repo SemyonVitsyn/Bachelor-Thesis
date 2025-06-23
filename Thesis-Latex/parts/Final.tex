@@ -1,0 +1,83 @@
+\section{Заключение}
+\label{sec:Final} \index{Chapter7}
+
+В этой работе было проведено исследование существующих проблем LLM в задаче извлечения информации из контекста, а также проведен сравнительных анализ различных подходов обучения. По результатам проведенных экспериментов можно сделать следующее заключение:
+
+\begin{enumerate}
+    \item Для современных мультиязычных моделей вроде Qwen2.5 нет необходимости в дополнительном этапе русификации. В данном случае он приводил даже к ухудшению итогового качества в сценарии RAG пайплайна, т.к. модель начинала хуже обрабатывать контекст.
+
+    \item Подход RAFT показал улучшение качества на реальных задачах в сравнение с классическим подходом дообучения. В силу простоты и доступности способа формирования данных, подход можно считать крайне эффективным для дообучения под формат задач с контекстной информацией.
+
+    \item На достаточном для RAG-задач размере контекста не выявлена существенная зависимость от положения релевантных документов. В связи с этим, для RAG на контексте не более 10 тыс. токенов проблему можно считать неактуальной даже для моделей с небольшим количеством параметров.
+\end{enumerate}
+
+Результаты показывают, что описанный подход построения RAG-бенчмарков является эффективным и может быть использован с последующим расширением типизации вопросов и покрываемых доменов.
+
+Дальнейшие направления работы могут включать в себя адаптацию эффективных методов дообучения для языковых моделей с менее чем 2 миллиардами параметров, а также дальнейшее изучение способов сокращения разрыва в качестве между языковыми моделями различных весовых категорий в задаче извлечения информации из контекста.
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% Удаленные статьи:
+
+% @misc{raft_lora,
+%     author = {Isaac Chung and Phat Vo and Arman C. Kizilkale and Aaron Reite},
+%     title = {Efficient In-Domain Question Answering for Resource-Constrained Environments},
+%     year = {2024},
+%     url = {https://arxiv.org/abs/2409.17648}
+% }
+
+% @misc{psychiatry_synth,
+%     author = {Chih-Wei Song and Yu-Kai Lee and Yin-Te Tsai},
+%     title = {A New Pipeline For Generating Instruction Dataset via RAG and Self Fine-Tuning},
+%     year = {2024},
+%     url = {https://arxiv.org/abs/2408.05911}
+% }
+
+% @misc{agriculture_synth,
+%     author = {Angels Balaguer and Vinamra Benara and Renato Luiz de Freitas Cunha and Roberto de M. Estevão Filho and Todd Hendry and Daniel Holstein and Jennifer Marsman and Nick Mecklenburg and Sara Malvar and Leonardo O. Nunes and Rafael Padilha and Morris Sharp and Bruno Silva and Swati Sharma and Vijay Aski and Ranveer Chandra},
+%     title = {RAG vs Fine-tuning: Pipelines, Tradeoffs, and a Case Study on Agriculture},
+%     year = {2024},
+%     url = {https://arxiv.org/abs/2401.08406}
+% }
+
+% @misc{Graph_RAG,
+%     author = {Darren Edge and Ha Trinh and Newman Cheng and Joshua Bradley and Alex Cha and Apurva Mody and Steven Truitt and Dasha Metropolitansky and Robert Osazuwa Ness and Jonathan Larson},
+%     title = {From Local to Global: A Graph RAG Approach to Query-Focused Summarization},
+%     year = {2024},
+%     url = {https://arxiv.org/abs/2404.16130}
+% }
+
+% @misc{RAG-Fusion,
+%     author = {Zackary Rackauckas},
+%     title = {RAG-Fusion: a New Take on Retrieval-Augmented Generation},
+%     year = {2024},
+%     url = {https://arxiv.org/abs/2402.03367}
+% }
